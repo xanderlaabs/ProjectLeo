@@ -5,14 +5,14 @@ import arcpy   #for functions that have to run in ArcGIS Pro
 df = pd.read_html('http://www.austindowntownlions.org/Eyeglasses_Recycling') #Correct Web Address
 dfa = df[1]#(skiprows=1,header=0)
 print(dfa)
-firstcsv=r"J:\firstcsv"
+firstcsv=r"J:\firstcsv.csv"
 dfa.to_csv(firstcsv)
 dfb = pd.read_csv(firstcsv,skiprows=1, header=0)
 print(dfb) #removing first row sucessful to this point
 
 
 
-csvtesta=r"J:\csvtesta"
+csvtesta=r"J:\csvtesta.csv"
 dfb.to_csv(csvtesta) #for testing csv at this point, has 2 extra colums
 
 

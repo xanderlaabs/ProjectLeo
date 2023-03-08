@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f40cb772-8de2-4969-8727-95b7c17370ca" name="Changes" comment="Udes OutTableName to specify name, corrected gdb location to ProjectLeo Folder">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ChartScraper1.py" beforeDir="false" afterPath="$PROJECT_DIR$/ChartScraper1.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
