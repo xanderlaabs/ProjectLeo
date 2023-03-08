@@ -14,12 +14,12 @@ print(dfb) #removing first row sucessful to this point
 csvfinal=r"J:\csvfinal.csv"
 dfb.to_csv(csvfinal) #for testing csv at this point, has 2 extra colums
 
-#csvlocation=r"J:LionsLocations.csv"
-#df[1].to_csv(csvlocation) #Saves to CSV file, can write to locations py has permissions to
+gdblocation=r"E:\OneDriveDCCCD\ProjectLeo\ProjectLeo.gdb" #Setting up to output to GDB
+OutTableName="LionsTable"
+arcpy.conversion.TableToTable(csvfinal,gdblocation,OutTableName) #Converting and adding to gdb
 
-#gdblocation=r"E:\OneDriveDCCCD\ProjectLeo\ProjectLeo.gdb" #Setting up to output to GDB
-#OutTableName="LionsTable"
-#arcpy.conversion.TableToTable(csvlocation,gdblocation,OutTableName) #Converting and adding to gdb
-
-#arcpy.geocoding.GeocodeLocationsFromTable(LionsTable,)
+#locatora="ArcGIS_World_Geocoding_Service.loc"
+#addfield="Address Address;City City;Zip Zip"
+#GeoCResultLayer="Drop Off Locations"
+#arcpy.geocoding.GeocodeLocationsFromTable(in_table=OutTableName, in_address_locator=locatora,address_fields=addfield,output_name=GeoCResultLayer)
 
