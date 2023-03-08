@@ -8,6 +8,7 @@ print(dfa)
 firstcsv=r"J:\firstcsv.csv"
 dfa.to_csv(firstcsv)
 dfb = pd.read_csv(firstcsv,skiprows=1, header=0)
+dfb=dfb.drop(dfb.columns[[0]],axis=1) #removes extra column
 print(dfb) #removing first row sucessful to this point
 
 
