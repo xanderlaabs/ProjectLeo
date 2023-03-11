@@ -18,6 +18,16 @@ gdblocation=r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\Defa
 OutTableName="LionsTable"
 arcpy.conversion.TableToTable(csvfinal,gdblocation,OutTableName) #Converting and adding to gdb
 
+#####Setting up for Geocode Address function
+tabletogeocode=(r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\Defualt.gdb\LionsTable")
+locatorname=(r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\AustinLocatorDelta.loc")
+addressfieldsetup=
+outclass=(r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\Default.gdb\GeocodeDonationLocations")
+loctype="ADDRESS_LOCATION"
+outfieldchoice="LOCATION_ONLY"
+
+arcpy.geocoding.GeocodeAddresses(tabletogeocode,locatorname,addressfieldsetup,outclass,locationtype=loctype,output_fields=outfieldchoice)
+###Geocoding the Table and adding point layer to Default GDB
 
 
 
