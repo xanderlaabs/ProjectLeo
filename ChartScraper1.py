@@ -14,7 +14,7 @@ print(dfb) #removing first row sucessful to this point
 csvfinal=r"D:\ScratchFolder\csvfinal.csv"
 dfb.to_csv(csvfinal) #for testing csv at this point, has 2 extra colums
 
-gdblocation=r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\ProjectLeo\ProjectLeo.gdb" #Setting up to output to GDB
+gdblocation=r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\Default.gdb" #Setting up to output to GDB
 OutTableName="LionsTable"
 arcpy.conversion.TableToTable(csvfinal,gdblocation,OutTableName) #Converting and adding to gdb
 
