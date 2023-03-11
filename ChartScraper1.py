@@ -18,8 +18,15 @@ gdblocation=r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\Defa
 OutTableName="LionsTable"
 arcpy.conversion.TableToTable(csvfinal,gdblocation,OutTableName) #Converting and adding to gdb
 
-#locatora="ArcGIS_World_Geocoding_Service.loc"
-#addfield="Address Address;City City;Zip Zip"
-#GeoCResultLayer="Drop Off Locations"
-#arcpy.geocoding.GeocodeLocationsFromTable(in_table=OutTableName, in_address_locator=locatora,address_fields=addfield,output_name=GeoCResultLayer)
 
+
+
+############Attempting to add LionsTable to Map
+######May not be needed, going to try to process table from filename and add to Gdb with filename/arcpy
+
+#aprx=arcpy.mp.ArcGISProject(r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\ProjectLeo.aprx")
+#addTab=arcpy.mp.Table(r"E:\OneDRiveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\Default.gdb\LionsTable")
+#m=aprx.listMaps("Lions*")[0]
+#arcpy.RefreshTOC() #Setting up default map as project map and adding LionsTable to it
+
+##################################################
