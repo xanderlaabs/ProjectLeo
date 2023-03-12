@@ -3,9 +3,8 @@ import os
 import arcpy   #for functions that have to run in ArcGIS Pro
 
 gdbpath=r"E:\OneDriveMain\OneDrive\_GisProjects\2023Projects\ProjectLeo\Default.gdb"
-print("Geodatabase Path Set to:" + gdbpath)
-aprx.defaultGeodatabase=gdbpath
-
+print("~~|  Geodatabase Path Set to:" + gdbpath)
+aprx.defaultGeodatabase=gdbpath   #setting up defualt gdb for arcpy results
 
 df = pd.read_html('http://www.austindowntownlions.org/Eyeglasses_Recycling')#Correct Web Address
 print("   ")
@@ -27,23 +26,26 @@ dfb.to_csv(csvfinal) #for testing csv at this point, has 2 extra colums
 print("   ")
 print("~~| Output to CSV LionsTable")
 
-gdblocation=r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\Default.gdb" #Setting up to output to GDB
+#Setting up to output to GDB
 OutTableName="LionsTable"
-arcpy.conversion.TableToTable(csvfinal,gdblocation,OutTableName) #Converting and adding to gdb
+arcpy.conversion.TableToTable(csvfinal,gdbpath,OutTableName) #Converting and adding to gdb
 print("   ")
 print("~~| Converted to table in ArcGIS...")
 
 #####Setting up for Geocode Address function
-#tabletogeocode=(r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\Defualt.gdb\LionsTable")
-#locatorname=(r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\AustinLocatorDelta.loc")
-#addressfieldsetup=
-#outclass=(r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\Default.gdb\GeocodeDonationLocations")
-#loctype="ADDRESS_LOCATION"
-#outfieldchoice="LOCATION_ONLY"
+tabletogeocode=(gdbpath+"\LionsTable")
+locatorname=(r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\AustinLocatorDelta.loc")
+addressfieldmap=("\'Address or Place\' Address VISIBLE NONE;Address2 <None> VISIBLE NONE;Address3 <None> VISIBLE NONE;"+
+                "Neighborhood <None> VISIBLE NONE;\'City\' City VISIBLE NONE;County <None> VISIBLE NONE;"+
+                 "State <None> VISIBLE NONE;\'Zip\' Zip VISIBLE NONE;Zip4 <None> VISIBLE NONE;Country <None> VISIBLE NONE")
+outclass=(gdbpath+"\GeocodedDonationLocations.shp")
+loctype="ADDRESS_LOCATION"
+outfieldchoice="LOCATION_ONLY"
 
-#arcpy.geocoding.GeocodeAddresses(tabletogeocode,locatorname,addressfieldsetup,outclass,locationtype=loctype,output_fields=outfieldchoice)
+arcpy.geocoding.GeocodeAddresses(tabletogeocode,locatorname,addressfieldmap,outclass,locationtype=loctype,output_fields=outfieldchoice)
 ######Geocoding the Table and adding point layer to Default GDB
-
+print("   ")
+print("~~|  Attempting to Geocode Table Locations...")
 
 
 ############Attempting to add LionsTable to Map
