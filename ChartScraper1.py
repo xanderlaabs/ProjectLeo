@@ -31,20 +31,26 @@ arcpy.conversion.TableToTable(csvfinal,gdbpath,OutTableName) #Converting and add
 print("   ")
 print("~~| Converted to table in ArcGIS...")
 
-#####Setting up for Geocode Address function
-tabletogeocode=(gdbpath+"\LionsTable")
-locatorname=(r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\AustinLocatorDelta.loc")
-addressfieldmap=("\'Address or Place\' Address VISIBLE NONE;Address2 <None> VISIBLE NONE;Address3 <None> VISIBLE NONE;"+
-                "Neighborhood <None> VISIBLE NONE;\'City\' City VISIBLE NONE;County <None> VISIBLE NONE;"+
-                 "State <None> VISIBLE NONE;\'Zip\' Zip VISIBLE NONE;Zip4 <None> VISIBLE NONE;Country <None> VISIBLE NONE")
-outclass=(gdbpath+"\GeocodedDonationLocations.shp")
-loctype="ADDRESS_LOCATION"
-outfieldchoice="LOCATION_ONLY"
 
-arcpy.geocoding.GeocodeAddresses(tabletogeocode,locatorname,addressfieldmap,outclass,location_type=loctype,output_fields=outfieldchoice)
+
+arcpy.geocoding.GeocodeAddresses(
+    in_table=r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\Default.gdb\LionsTable",
+    address_locator=r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\AustinLocatorDelta.loc",
+    in_address_fields="'Address or Place' Address VISIBLE NONE;Address2 <None> VISIBLE NONE;Address3 <None> VISIBLE NONE;Neighborhood <None> VISIBLE NONE;City City VISIBLE NONE;County <None> VISIBLE NONE;State <None> VISIBLE NONE;ZIP ZIP VISIBLE NONE;ZIP4 <None> VISIBLE NONE;Country <None> VISIBLE NONE",
+    out_feature_class=r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\Default.gdb\GeocodedDonationLocations",
+    out_relationship_type="STATIC",
+    country=None,
+    location_type="ADDRESS_LOCATION",
+    category=None,
+    output_fields="LOCATION_ONLY"
+)
 ######Geocoding the Table and adding point layer to Default GDB
 print("   ")
 print("~~|  Attempting to Geocode Table Locations...")
+
+
+
+
 
 
 ############Attempting to add LionsTable to Map
