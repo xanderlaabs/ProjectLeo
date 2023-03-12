@@ -5,6 +5,7 @@ import arcpy   #for functions that have to run in ArcGIS Pro
 gdbpath=r"E:\OneDriveMain\OneDrive\_GisProjects\2023Projects\ProjectLeo\Default.gdb"
 print("~~|  Geodatabase Path Set to:" + gdbpath)
 
+
 df = pd.read_html('http://www.austindowntownlions.org/Eyeglasses_Recycling')#Correct Web Address
 print("   ")
 print("~~| Reading Info From Website...")
@@ -48,8 +49,8 @@ arcpy.geocoding.GeocodeAddresses(
 print("   ")
 print("~~|  Attempting to Geocode Table Locations...")
 
-
-
+ResultPath1=r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\Default.gdb\GeocodedDonationLocations"
+m.addDataFromPath(ResultPath1)
 
 
 
