@@ -4,7 +4,6 @@ import arcpy   #for functions that have to run in ArcGIS Pro
 
 gdbpath=r"E:\OneDriveMain\OneDrive\_GisProjects\2023Projects\ProjectLeo\Default.gdb"
 print("~~|  Geodatabase Path Set to:" + gdbpath)
-aprx.defaultGeodatabase=gdbpath   #setting up defualt gdb for arcpy results
 
 df = pd.read_html('http://www.austindowntownlions.org/Eyeglasses_Recycling')#Correct Web Address
 print("   ")
@@ -42,7 +41,7 @@ outclass=(gdbpath+"\GeocodedDonationLocations.shp")
 loctype="ADDRESS_LOCATION"
 outfieldchoice="LOCATION_ONLY"
 
-arcpy.geocoding.GeocodeAddresses(tabletogeocode,locatorname,addressfieldmap,outclass,locationtype=loctype,output_fields=outfieldchoice)
+arcpy.geocoding.GeocodeAddresses(tabletogeocode,locatorname,addressfieldmap,outclass,location_type=loctype,output_fields=outfieldchoice)
 ######Geocoding the Table and adding point layer to Default GDB
 print("   ")
 print("~~|  Attempting to Geocode Table Locations...")
