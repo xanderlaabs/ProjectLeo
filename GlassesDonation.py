@@ -96,19 +96,19 @@ print("   ")
 print("~~|    User Location Geocoded...")
 
 
-#print("~~|  Attempting to create a feature layer on the map...")
-#ResultPath1=r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\Default.gdb\GeocodedDonationLocations"
 
-###~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-######Making Feature Layer from Feature Class, adding to map
-#layername="Donation Locations"
-#arcpy.management.MakeFeatureLayer(ResultPath1,layername)
-#p=arcpy.mp.ArcGISProject("current")
-#m=listMaps("Map")[0]
-#m.addlayer(layername,"TOP")
-#######################################
 
-###~~~~~~~~~~~~~~~~~~~~~~~~~~
+print("~~|  Attempting to create a feature layer on the map...")
+ResultPath1=r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\Default.gdb\GeocodedDonationLocations"
+
+
+##Making Feature Layer from Feature Class, adding to map
+layername="Donation Locations"
+arcpy.management.MakeFeatureLayer(ResultPath1,layername)
+p=arcpy.mp.ArcGISProject(r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\ProjectLeo.aprx")
+m=listMaps("Map")[0]
+m.addlayer(layername,"TOP")
+p.save()
 
 
 
