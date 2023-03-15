@@ -48,10 +48,13 @@ arcpy.geocoding.GeocodeAddresses(
 ######Geocoding the Table and adding point layer to Default GDB
 print("   ")
 print("~~|  Attempting to Geocode Table Locations...")
-
+print("   ")
+print("~~|  Attempting to create a feature layer on the map...")
 ResultPath1=r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\Default.gdb\GeocodedDonationLocations"
-m.addDataFromPath(ResultPath1)
-
+LayerLabel="Donation Locations"
+arcpy.management.MakeFeatureLayer(ResultPath1,LayerLabel)
+print("~~|  Donation Location Layer Added")
+print("   ")
 
 
 ############Attempting to add LionsTable to Map
