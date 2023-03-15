@@ -16,7 +16,7 @@ InputAddress=input("Please Input Austin, TX Street Address:   ")  #Gathering use
 InputZip=input("Please Input Zip Code    ")
 secondcsv=r"D:\ScratchFolder\secondcsv.csv" #saving as CSV file
 
-with open(secondcsv,"w",newline="") as file_writer:
+with open(secondcsv,"w",newline="") as file_writer:     #writing user input to second csv file
     fields=["Address","Zip"]
     writer=csv.DictWriter(file_writer,fieldnames=fields)
     writer.writeheader()
@@ -29,10 +29,6 @@ print("")
 gdbpath=r"E:\OneDriveMain\OneDrive\_GisProjects\2023Projects\ProjectLeo\Default.gdb"
 print("~~|   Geodatabase Path Set to:" + gdbpath)
 
-#df2=pd.DataFrame(SpotList)    #Reading list into Dataframe for Pandas
-
-#df2.to_csv(secondcsv)
-#print("~~|   Saved as CSV File...")
 
 df = pd.read_html('http://www.austindowntownlions.org/Eyeglasses_Recycling')#Scraping Correct Web Address
 print("   ")
@@ -66,6 +62,8 @@ arcpy.conversion.TableToTable(secondcsv,gdbpath,spottablename)
 print("~~|   User Address Converted to table in ArcGIS...")
 print("   ")
 
+print("~~|  Attempting to Geocode Table Locations...")
+print("   ")
 arcpy.geocoding.GeocodeAddresses(
     in_table=r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\Default.gdb\LionsTable",
     address_locator=r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\AustinLocatorDelta.loc",
@@ -79,9 +77,23 @@ arcpy.geocoding.GeocodeAddresses(
 )
 ######Geocoding the Table and adding point layer to Default GDB
 print("   ")
-print("~~|  Attempting to Geocode Table Locations...")
+print("~~|  Geocoding Locations Completed...")
 print("   ")
 
+print("~~|    Geocoding User Location into Feature Class")
+arcpy.geocoding.GeocodeAddresses(
+    in_table=r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\Default.gdb\SpotTable",
+    address_locator=r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\AustinLocatorDelta.loc",
+    in_address_fields="'Address or Place' Address VISIBLE NONE;Address2 <None> VISIBLE NONE;Address3 <None> VISIBLE NONE;Neighborhood <None> VISIBLE NONE;City <None> VISIBLE NONE;County <None> VISIBLE NONE;State <None> VISIBLE NONE;ZIP ZIP VISIBLE NONE;ZIP4 <None> VISIBLE NONE;Country <None> VISIBLE NONE",
+    out_feature_class=r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\Default.gdb\GeocodedUserLocation",
+    out_relationship_type="STATIC",
+    country=None,
+    location_type="ADDRESS_LOCATION",
+    category=None,
+    output_fields="LOCATION_ONLY"
+)#Creadted one entry layer with user input location, for use with Near tool
+print("   ")
+print("~~|    User Location Geocoded...")
 
 
 #print("~~|  Attempting to create a feature layer on the map...")
