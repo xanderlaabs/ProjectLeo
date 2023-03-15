@@ -14,16 +14,25 @@ print("")
 
 InputAddress=input("Please Input Austin, TX Street Address:   ")  #Gathering user input
 InputZip=input("Please Input Zip Code    ")
-SpotList=[InputAddress,InputZip] #Creating List from strings
+secondcsv=r"D:\ScratchFolder\secondcsv.csv" #saving as CSV file
+
+with open(secondcsv,"w",newline="") as file_writer:
+    fields=["Address","Zip"]
+    writer=csv.DictWriter(file_writer,fieldnames=fields)
+    writer.writeheader()
+    writer.writerow({"Address":InputAddress,"Zip":InputZip})
+
+
+#SpotList=[InputAddress,InputZip] #Creating List from strings
 print("")
 
 gdbpath=r"E:\OneDriveMain\OneDrive\_GisProjects\2023Projects\ProjectLeo\Default.gdb"
 print("~~|   Geodatabase Path Set to:" + gdbpath)
 
-df2=pd.DataFrame(SpotList)    #Reading list into Dataframe for Pandas
-secondcsv=r"D:\ScratchFolder\secondcsv.csv" #saving as CSV file
-df2.to_csv(secondcsv)
-print("~~|   Saved as CSV File...")
+#df2=pd.DataFrame(SpotList)    #Reading list into Dataframe for Pandas
+
+#df2.to_csv(secondcsv)
+#print("~~|   Saved as CSV File...")
 
 df = pd.read_html('http://www.austindowntownlions.org/Eyeglasses_Recycling')#Scraping Correct Web Address
 print("   ")
