@@ -1,12 +1,31 @@
 import pandas as pd
 import os
-import arcpy   #for functions that have to run in ArcGIS Pro
+import arcpy#for functions that have to run in ArcGIS Pro
+import csv
+
+print("")     #Intro Message and Explanation
+print("   Welcome to the Austin Downtown Lions Club")
+print("     Glasses Donation Location Finder Tool")
+print("~~~~~~~~~~~~*********************~~~~~~~~~~~")
+print("")
+print(" This tool takes your Austin, TX address and finds the "
+print(" nearest donation location for you."
+print(""
+
+InputAddress=input("Please Input Austin, TX Street Address:   ")  #Gathering user input
+InputZip=input("Please Input Zip Code    ")
+SpotList=[InputAddress,InputZip] #Creating List from strings
+print("")
 
 gdbpath=r"E:\OneDriveMain\OneDrive\_GisProjects\2023Projects\ProjectLeo\Default.gdb"
 print("~~|   Geodatabase Path Set to:" + gdbpath)
 
+df2=pd.Dataframe(SpotList)    #Reading list into Dataframe for Pandas
+secondcsv=r"D:\ScratchFolder\secondcsv.csv" #saving as CSV file
+df2.to_csv(secondcsv)
+print("~~|   Saved as CSV File...")
 
-df = pd.read_html('http://www.austindowntownlions.org/Eyeglasses_Recycling')#Correct Web Address
+df = pd.read_html('http://www.austindowntownlions.org/Eyeglasses_Recycling')#Scraping Correct Web Address
 print("   ")
 print("~~|  Reading Info From Website...")
 dfa = df[1]#(skiprows=1,header=0)
@@ -28,11 +47,15 @@ print("~~|  Output to CSV LionsTable")
 
 #Setting up to output to GDB
 OutTableName="LionsTable"
-arcpy.conversion.TableToTable(csvfinal,gdbpath,OutTableName) #Converting and adding to gdb
+arcpy.conversion.TableToTable(csvfinal,gdbpath,OutTableName) #Converting and adding Lions Locations to gdb
 print("   ")
-print("~~|  Converted to table in ArcGIS...")
+print("~~|  Lions Donation Locations Converted to table in ArcGIS...")
+print("")
 
-
+spottablename="SpotTable"
+arcpy.conversion.TableToTable(secondcsv,gdbpath,spottablename)
+print("~~|   User Address Converted to table in ArcGIS...")
+print("   ")
 
 arcpy.geocoding.GeocodeAddresses(
     in_table=r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\Default.gdb\LionsTable",
@@ -52,14 +75,17 @@ print("   ")
 print("~~|  Attempting to create a feature layer on the map...")
 ResultPath1=r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\Default.gdb\GeocodedDonationLocations"
 
-layername="Donation Locations"
-arcpy.management.MakeFeatureLayer(ResultPath1,layername)
-p=arcpy.mp.ArcGISProject("current")
-m=listMaps("Map")[0]
-m.addlayer(layername,"TOP")
 
+###~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+######Making Feature Layer from Feature Class, adding to map
+#layername="Donation Locations"
+#arcpy.management.MakeFeatureLayer(ResultPath1,layername)
+#p=arcpy.mp.ArcGISProject("current")
+#m=listMaps("Map")[0]
+#m.addlayer(layername,"TOP")
+#######################################
 
-
+###~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 
