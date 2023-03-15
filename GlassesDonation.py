@@ -8,9 +8,9 @@ print("   Welcome to the Austin Downtown Lions Club")
 print("     Glasses Donation Location Finder Tool")
 print("~~~~~~~~~~~~*********************~~~~~~~~~~~")
 print("")
-print(" This tool takes your Austin, TX address and finds the "
-print(" nearest donation location for you."
-print(""
+print(" This tool takes your Austin, TX address and finds the ")
+print(" nearest donation location for you.")
+print("")
 
 InputAddress=input("Please Input Austin, TX Street Address:   ")  #Gathering user input
 InputZip=input("Please Input Zip Code    ")
@@ -20,7 +20,7 @@ print("")
 gdbpath=r"E:\OneDriveMain\OneDrive\_GisProjects\2023Projects\ProjectLeo\Default.gdb"
 print("~~|   Geodatabase Path Set to:" + gdbpath)
 
-df2=pd.Dataframe(SpotList)    #Reading list into Dataframe for Pandas
+df2=pd.DataFrame(SpotList)    #Reading list into Dataframe for Pandas
 secondcsv=r"D:\ScratchFolder\secondcsv.csv" #saving as CSV file
 df2.to_csv(secondcsv)
 print("~~|   Saved as CSV File...")
@@ -72,9 +72,11 @@ arcpy.geocoding.GeocodeAddresses(
 print("   ")
 print("~~|  Attempting to Geocode Table Locations...")
 print("   ")
-print("~~|  Attempting to create a feature layer on the map...")
-ResultPath1=r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\Default.gdb\GeocodedDonationLocations"
 
+
+
+#print("~~|  Attempting to create a feature layer on the map...")
+#ResultPath1=r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\Default.gdb\GeocodedDonationLocations"
 
 ###~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ######Making Feature Layer from Feature Class, adding to map
