@@ -44,7 +44,7 @@ dfb = pd.read_csv(firstcsv,skiprows=1, header=0,index_col='Facility') #removes r
 
 print("~~|  Formatting Data... ")
 dfb=dfb.drop(dfb.columns[[0]],axis=1) #removes extra column
-print(dfb) #removing first row sucessful to this point
+#print(dfb) #removing first row sucessful to this point
 csvfinal=r"D:\ScratchFolder\csvfinal.csv"
 dfb.to_csv(csvfinal) #for testing csv at this point, has 2 extra colums
 
@@ -119,10 +119,16 @@ m.addLayer(layerfile1,"TOP")
 
 print("~~|   User Location Layer Added")
 
+arcpy.management.Copy("Donation Locations","Donation Locations Next")
+arcpy.management.Delete("Donation Locations")
+arcpy.management.Copy("User Location","User Location 2")
+arcpy.management.Delete("User Location")
+p.save()
+
 print("~~|   Calculating closest location to User Address...")
 arcpy.analysis.Near(
-    in_features="Donation Locations",
-    near_features="'User Location'",
+    in_features="Donation Locations Next",
+    near_features="User Location 2",
     search_radius=None,
     location="NO_LOCATION",
     angle="NO_ANGLE",
@@ -134,7 +140,7 @@ arcpy.analysis.Near(
 lyr="Donation Locations"
 with arcpy.da.UpdateCursor(lyr,"NEAR_DIST") as cursor:
     for row in cursor:
-        if row[0]==-1
+        if row[0]==-1:
             cursor.deleteRow()
 
 print("~~|   Calculation complete")
@@ -168,4 +174,3 @@ print("~~|   Calculation complete")
 #print("~~|   Symbology Changed")
 
 
-p.save()  
