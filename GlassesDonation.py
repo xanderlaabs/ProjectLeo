@@ -97,19 +97,50 @@ print("~~|    User Location Geocoded...")
 
 
 
-
+print("   ")
 print("~~|  Attempting to create a feature layer on the map...")
 ResultPath1=r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\Default.gdb\GeocodedDonationLocations"
-
-
 ##Making Feature Layer from Feature Class, adding to map
-layername=r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\Default.gdb\GeocodeDonationLocations.lyr"
-layerfile1=arcpy.management.MakeFeatureLayer(ResultPath1,layername)
+layername="Donation Locations"
+layerfile1=arcpy.management.MakeFeatureLayer(ResultPath1,layername)[0]
 p=arcpy.mp.ArcGISProject(r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\ProjectLeo.aprx")
 m=p.listMaps()[0]
 m.addLayer(layerfile1,"TOP")
-p.save()
+print("")
+print("~~|   Donation Locations Layer Added")
 
+print("")
+print("~~|   Adding User Location Layer")
+ResultPath1=r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\Default.gdb\GeocodedUserLocation"
+layername="User Location"
+layerfile1=arcpy.management.MakeFeatureLayer(ResultPath1,layername)[0]
+m=p.listMaps()[0]
+m.addLayer(layerfile1,"TOP")
+
+print("~~|   User Location Layer Added")
+
+#print("~~|   Changing Symbology of Donation Locations")
+#lyr=m.listLayers("Donation Locations")[0]
+#sym=lyr.symbology
+#sym.renderer.symbol.applySymbolFromGallery("Tear Pin") #selects tear pin symbol
+#sym.renderer.symbol.color={'RGB':[0,169,230,0]}   #Sets color to Blue
+#sym.renderer.symbol.outlinecolor={'RGB':[0,0,0,0]}
+#sym.renderer.symbol.size=11
+#lyr.symbology=sym
+#print("~~|   Symbology Changed")
+
+#print("~~|   Changing Symbology of User Location")
+#lyr=m.listLayers("User Location")[0]
+#sym=lyr.symbology
+#sym.renderer.symbol.applySymbolFromGallery("Hexagon")
+#sym.renderer.symbol.color={'RGB':[255,165,0,0]} #sets color to Orange
+#sym.renderer.symbol.outlinecolor
+#sym.renderer.symbol.size=11
+#lyr.symbology=sym
+#print("~~|   Symbology Changed")
+
+
+p.save()  #Will want to move this save around for before launching ArcGIS Pro
 
 #arcpy.analysis.GenerateNearTable(
 #    in_features="GeocodedUserLocation",
@@ -123,3 +154,4 @@ p.save()
  #   method="PLANAR",
  #   distance_unit=""
 #)
+
