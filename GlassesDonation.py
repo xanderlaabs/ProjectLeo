@@ -38,7 +38,7 @@ dfa = df[1]#(skiprows=1,header=0)
 firstcsv=r"D:\ScratchFolder\firstcsv.csv"
 dfa.to_csv(firstcsv)
 
-print("~~|   Saved as CSV File... ")
+print("~~|   Saved as CSV File ")
 dfb = pd.read_csv(firstcsv,skiprows=1, header=0,index_col='Facility') #removes row, sets header to new first row
 #Sets index column to facility, auto deletes numeric first column
 
@@ -54,12 +54,12 @@ print("~~|   Output to CSV LionsTable")
 OutTableName="LionsTable"
 arcpy.conversion.TableToTable(csvfinal,gdbpath,OutTableName) #Converting and adding Lions Locations to gdb
 
-print("~~|   Lions Donation Locations Converted to table in ArcGIS...")
+print("~~|   Lions Donation Locations Converted to table in ArcGIS")
 
 
 spottablename="SpotTable"
 arcpy.conversion.TableToTable(secondcsv,gdbpath,spottablename)
-print("~~|   User Address Converted to table in ArcGIS...")
+print("~~|   User Address Converted to table in ArcGIS")
 
 
 print("~~|   Attempting to Geocode Table Locations...")
@@ -77,10 +77,10 @@ arcpy.geocoding.GeocodeAddresses(
 )
 ######Geocoding the Table and adding point layer to Default GDB
 
-print("~~|   Geocoding Locations Completed...")
+print("~~|   Geocoding Locations Completed")
 
 
-print("~~|   Geocoding User Location into Feature Class")
+print("~~|   Geocoding User Location into Feature Class...")
 arcpy.geocoding.GeocodeAddresses(
     in_table=r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\Default.gdb\SpotTable",
     address_locator=r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\AustinLocatorDelta.loc",
@@ -93,7 +93,7 @@ arcpy.geocoding.GeocodeAddresses(
     output_fields="LOCATION_ONLY"
 )#Creadted one entry layer with user input location, for use with Near tool
 
-print("~~|   User Location Geocoded...")
+print("~~|   User Location Geocoded")
 
 
 
@@ -110,7 +110,7 @@ m.addLayer(layerfile1,"TOP")
 print("~~|   Donation Locations Layer Added")
 
 
-print("~~|   Adding User Location Layer")
+print("~~|   Adding User Location Layer...")
 ResultPath1=r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\Default.gdb\GeocodedUserLocation"
 layername="User Location"
 layerfile1=arcpy.management.MakeFeatureLayer(ResultPath1,layername)[0]
@@ -122,14 +122,14 @@ print("~~|   User Location Layer Added")
 print("~~|   Attempting to save...")
 p.save()
 print("~~|   Saved Layers in aprx")
-print("~~|   Attempting to disconnect all users from GDB [schema lock]")
+print("~~|   Attempting to disconnect all users from GDB [schema lock]...")
 arcpy.DisconnectUser(gdbpath,'ALL')
 print("~~|   Disconnected"
       "")
 print("~~|   Calculating closest location to User Address...")
 arcpy.analysis.Near(
-    in_features="Donation Locations Next",
-    near_features="User Location 2",
+    in_features="Donation Locations",
+    near_features="User Location",
     search_radius=None,
     location="NO_LOCATION",
     angle="NO_ANGLE",
@@ -138,6 +138,16 @@ arcpy.analysis.Near(
     distance_unit="Miles"
 )
 
+
+#arcpy.management.Sort(
+#    in_dataset="Donation Locations",
+#    out_dataset=r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\Default.gdb\DonationLocationsSorted",
+#    sort_field="NEAR_DIST ASCENDING",
+#    spatial_sort_method="UR"
+#)
+##Attempting sort ascending by distance. Should have -1's on top now
+
+###
 #lyr="Donation Locations"
 #with arcpy.da.UpdateCursor(lyr,"NEAR_DIST") as cursor:
 #    for row in cursor:
@@ -146,12 +156,36 @@ arcpy.analysis.Near(
 
 print("~~|   Calculation complete")
 
-#arcpy.management.Sort(
-#    in_dataset="Donation Locations",
-#    out_dataset=r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\Default.gdb\DonationLocationsSorted",
-#    sort_field="NEAR_DIST ASCENDING",
-#    spatial_sort_method="UR"
+#newname="NEARDIST"
+#newalias="Distance in Miles"
+#arcpy.management.AlterField(lyr,"NEAR_DIST",newname,newalias)
+###Giving the Distance field an alias
+
+
+#arcpy.conversion.ExportTable(
+#    in_table="Donation Locations",
+#    out_table=r"D:\ScratchFolder\endresults.csv",
+#    where_clause="",
+#    use_field_alias_as_name="USE_ALIAS",
+#    field_mapping='Facility "Facility" true true false 8000 Text 0 0,First,#,Donation Locations,Facility,0,8000;Address "Address" true true false 8000 Text 0 0,First,#,Donation Locations,Address,0,8000;City "City" true true false 8000 Text 0 0,First,#,Donation Locations,City,0,8000;Zip "Zip" true true false 4 Long 0 0,First,#,Donation Locations,Zip,-1,-1;Phone "Phone" true true false 8000 Text 0 0,First,#,Donation Locations,Phone,0,8000;Lion_responsible "Lion responsible" true true false 8000 Text 0 0,First,#,Donation Locations,Lion_responsible,0,8000;NEAR_DIST "NEAR_DIST" true true false 8 Double 0 0,First,#,Donation Locations,NEAR_DIST,-1,-1',
+#    sort_field="NEAR_DIST ASCENDING"
 #)
+#######Exports as CSV table so that PyCharm Console can display
+
+
+
+dfinal=pd.read_csv(out_table)
+print("")
+print("~~|   Here are the closest locations, from closest distance to furthest:")
+print("")
+print(dfinal)
+print("")
+print("~~|   Now Opening ArcGIS Pro...")
+print("~~|   Thank You and Have a Nice Day.   |~~~")
+print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
+
+
 
 
 #print("~~|   Changing Symbology of Donation Locations")
