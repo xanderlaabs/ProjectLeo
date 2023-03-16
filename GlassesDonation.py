@@ -103,12 +103,23 @@ ResultPath1=r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\Defa
 
 
 ##Making Feature Layer from Feature Class, adding to map
-layername="Donation Locations"
-arcpy.management.MakeFeatureLayer(ResultPath1,layername)
+layername=r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\Default.gdb\GeocodeDonationLocations.lyr"
+layerfile1=arcpy.management.MakeFeatureLayer(ResultPath1,layername)
 p=arcpy.mp.ArcGISProject(r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\ProjectLeo.aprx")
-m=listMaps("Map")[0]
-m.addlayer(layername,"TOP")
+m=p.listMaps()[0]
+m.addLayer(layerfile1,"TOP")
 p.save()
 
 
-
+#arcpy.analysis.GenerateNearTable(
+#    in_features="GeocodedUserLocation",
+#    near_features="GeocodedDonationLocations",
+ #   out_table=r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\Default.gdb\NearTable",
+ #   search_radius=None,
+ #   location="NO_LOCATION",
+#    angle="NO_ANGLE",
+#    closest="ALL",
+#    closest_count=5,
+ #   method="PLANAR",
+ #   distance_unit=""
+#)
