@@ -32,29 +32,29 @@ print("~~|   Geodatabase Path Set to:" + gdbpath)
 
 df = pd.read_html('http://www.austindowntownlions.org/Eyeglasses_Recycling')#Scraping Correct Web Address
 
-print("~~|  Reading Info From Website...")
+print("~~|   Reading Info From Website...")
 dfa = df[1]#(skiprows=1,header=0)
 #print(dfa)
 firstcsv=r"D:\ScratchFolder\firstcsv.csv"
 dfa.to_csv(firstcsv)
 
-print("~~|  Saved as CSV File... ")
+print("~~|   Saved as CSV File... ")
 dfb = pd.read_csv(firstcsv,skiprows=1, header=0,index_col='Facility') #removes row, sets header to new first row
 #Sets index column to facility, auto deletes numeric first column
 
-print("~~|  Formatting Data... ")
+print("~~|   Formatting Data... ")
 dfb=dfb.drop(dfb.columns[[0]],axis=1) #removes extra column
 #print(dfb) #removing first row sucessful to this point
 csvfinal=r"D:\ScratchFolder\csvfinal.csv"
 dfb.to_csv(csvfinal) #for testing csv at this point, has 2 extra colums
 
-print("~~|  Output to CSV LionsTable")
+print("~~|   Output to CSV LionsTable")
 
 #Setting up to output to GDB
 OutTableName="LionsTable"
 arcpy.conversion.TableToTable(csvfinal,gdbpath,OutTableName) #Converting and adding Lions Locations to gdb
 
-print("~~|  Lions Donation Locations Converted to table in ArcGIS...")
+print("~~|   Lions Donation Locations Converted to table in ArcGIS...")
 
 
 spottablename="SpotTable"
@@ -62,7 +62,7 @@ arcpy.conversion.TableToTable(secondcsv,gdbpath,spottablename)
 print("~~|   User Address Converted to table in ArcGIS...")
 
 
-print("~~|  Attempting to Geocode Table Locations...")
+print("~~|   Attempting to Geocode Table Locations...")
 
 arcpy.geocoding.GeocodeAddresses(
     in_table=r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\Default.gdb\LionsTable",
@@ -77,10 +77,10 @@ arcpy.geocoding.GeocodeAddresses(
 )
 ######Geocoding the Table and adding point layer to Default GDB
 
-print("~~|  Geocoding Locations Completed...")
+print("~~|   Geocoding Locations Completed...")
 
 
-print("~~|    Geocoding User Location into Feature Class")
+print("~~|   Geocoding User Location into Feature Class")
 arcpy.geocoding.GeocodeAddresses(
     in_table=r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\Default.gdb\SpotTable",
     address_locator=r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\AustinLocatorDelta.loc",
@@ -93,12 +93,12 @@ arcpy.geocoding.GeocodeAddresses(
     output_fields="LOCATION_ONLY"
 )#Creadted one entry layer with user input location, for use with Near tool
 
-print("~~|    User Location Geocoded...")
+print("~~|   User Location Geocoded...")
 
 
 
 
-print("~~|  Attempting to create a feature layer on the map...")
+print("~~|   Attempting to create a feature layer on the map...")
 ResultPath1=r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\Default.gdb\GeocodedDonationLocations"
 ##Making Feature Layer from Feature Class, adding to map
 layername="Donation Locations"
@@ -119,12 +119,13 @@ m.addLayer(layerfile1,"TOP")
 
 print("~~|   User Location Layer Added")
 
-arcpy.management.Copy("Donation Locations","Donation Locations Next")
-arcpy.management.Delete("Donation Locations")
-arcpy.management.Copy("User Location","User Location 2")
-arcpy.management.Delete("User Location")
+print("~~|   Attempting to save...")
 p.save()
-
+print("~~|   Saved Layers in aprx")
+print("~~|   Attempting to disconnect all users from GDB [schema lock]")
+arcpy.DisconnectUser(gdbpath,'ALL')
+print("~~|   Disconnected"
+      "")
 print("~~|   Calculating closest location to User Address...")
 arcpy.analysis.Near(
     in_features="Donation Locations Next",
@@ -137,11 +138,11 @@ arcpy.analysis.Near(
     distance_unit="Miles"
 )
 
-lyr="Donation Locations"
-with arcpy.da.UpdateCursor(lyr,"NEAR_DIST") as cursor:
-    for row in cursor:
-        if row[0]==-1:
-            cursor.deleteRow()
+#lyr="Donation Locations"
+#with arcpy.da.UpdateCursor(lyr,"NEAR_DIST") as cursor:
+#    for row in cursor:
+#        if row[0]==-1:
+#            cursor.deleteRow()
 
 print("~~|   Calculation complete")
 
