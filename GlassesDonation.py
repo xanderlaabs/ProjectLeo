@@ -125,8 +125,8 @@ print("~~|   Saved Layers in aprx")
 
 print("~~|   Calculating closest location to User Address...")
 arcpy.analysis.Near(
-    in_features=DonationLayer,
-    near_features=UserLayer,
+    in_features="Donation Locations",
+    near_features="User Location",
     search_radius=None,
     location="NO_LOCATION",
     angle="NO_ANGLE",
