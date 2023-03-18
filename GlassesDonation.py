@@ -122,14 +122,11 @@ print("~~|   User Location Layer Added")
 print("~~|   Attempting to save...")
 p.save()
 print("~~|   Saved Layers in aprx")
-print("~~|   Attempting to disconnect all users from GDB [schema lock]...")
-arcpy.DisconnectUser(gdbpath,'ALL')
-print("~~|   Disconnected"
-      "")
+
 print("~~|   Calculating closest location to User Address...")
 arcpy.analysis.Near(
-    in_features="Donation Locations",
-    near_features="User Location",
+    in_features=DonationLayer,
+    near_features=UserLayer,
     search_radius=None,
     location="NO_LOCATION",
     angle="NO_ANGLE",
@@ -139,37 +136,37 @@ arcpy.analysis.Near(
 )
 
 
-#arcpy.management.Sort(
-#    in_dataset="Donation Locations",
-#    out_dataset=r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\Default.gdb\DonationLocationsSorted",
-#    sort_field="NEAR_DIST ASCENDING",
-#    spatial_sort_method="UR"
-#)
+arcpy.management.Sort(
+    in_dataset="Donation Locations",
+    out_dataset=r"E:\OneDriveMain\OneDrive\_GISProjects\2023Projects\ProjectLeo\Default.gdb\DonationLocationsSorted",
+    sort_field="NEAR_DIST ASCENDING",
+    spatial_sort_method="UR"
+)
 ##Attempting sort ascending by distance. Should have -1's on top now
 
 ###
-#lyr="Donation Locations"
-#with arcpy.da.UpdateCursor(lyr,"NEAR_DIST") as cursor:
-#    for row in cursor:
-#        if row[0]==-1:
-#            cursor.deleteRow()
+lyr="Donation Locations"
+with arcpy.da.UpdateCursor(lyr,"NEAR_DIST") as cursor:
+    for row in cursor:
+        if row[0]==-1:
+            cursor.deleteRow()
 
 print("~~|   Calculation complete")
 
-#newname="NEARDIST"
-#newalias="Distance in Miles"
-#arcpy.management.AlterField(lyr,"NEAR_DIST",newname,newalias)
+newname="NEARDIST"
+newalias="Distance in Miles"
+arcpy.management.AlterField(lyr,"NEAR_DIST",newname,newalias)
 ###Giving the Distance field an alias
 
 
-#arcpy.conversion.ExportTable(
-#    in_table="Donation Locations",
-#    out_table=r"D:\ScratchFolder\endresults.csv",
-#    where_clause="",
-#    use_field_alias_as_name="USE_ALIAS",
-#    field_mapping='Facility "Facility" true true false 8000 Text 0 0,First,#,Donation Locations,Facility,0,8000;Address "Address" true true false 8000 Text 0 0,First,#,Donation Locations,Address,0,8000;City "City" true true false 8000 Text 0 0,First,#,Donation Locations,City,0,8000;Zip "Zip" true true false 4 Long 0 0,First,#,Donation Locations,Zip,-1,-1;Phone "Phone" true true false 8000 Text 0 0,First,#,Donation Locations,Phone,0,8000;Lion_responsible "Lion responsible" true true false 8000 Text 0 0,First,#,Donation Locations,Lion_responsible,0,8000;NEAR_DIST "NEAR_DIST" true true false 8 Double 0 0,First,#,Donation Locations,NEAR_DIST,-1,-1',
-#    sort_field="NEAR_DIST ASCENDING"
-#)
+arcpy.conversion.ExportTable(
+    in_table="Donation Locations",
+    out_table=r"D:\ScratchFolder\endresults.csv",
+    where_clause="",
+    use_field_alias_as_name="USE_ALIAS",
+    field_mapping='Facility "Facility" true true false 8000 Text 0 0,First,#,Donation Locations,Facility,0,8000;Address "Address" true true false 8000 Text 0 0,First,#,Donation Locations,Address,0,8000;City "City" true true false 8000 Text 0 0,First,#,Donation Locations,City,0,8000;Zip "Zip" true true false 4 Long 0 0,First,#,Donation Locations,Zip,-1,-1;Phone "Phone" true true false 8000 Text 0 0,First,#,Donation Locations,Phone,0,8000;Lion_responsible "Lion responsible" true true false 8000 Text 0 0,First,#,Donation Locations,Lion_responsible,0,8000;NEAR_DIST "NEAR_DIST" true true false 8 Double 0 0,First,#,Donation Locations,NEAR_DIST,-1,-1',
+    sort_field="NEAR_DIST ASCENDING"
+)
 #######Exports as CSV table so that PyCharm Console can display
 
 
@@ -186,26 +183,5 @@ print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
 
 
-
-
-#print("~~|   Changing Symbology of Donation Locations")
-#lyr=m.listLayers("Donation Locations")[0]
-#sym=lyr.symbology
-#sym.renderer.symbol.applySymbolFromGallery("Tear Pin") #selects tear pin symbol
-#sym.renderer.symbol.color={'RGB':[0,169,230,0]}   #Sets color to Blue
-#sym.renderer.symbol.outlinecolor={'RGB':[0,0,0,0]}
-#sym.renderer.symbol.size=11
-#lyr.symbology=sym
-#print("~~|   Symbology Changed")
-
-#print("~~|   Changing Symbology of User Location")
-#lyr=m.listLayers("User Location")[0]
-#sym=lyr.symbology
-#sym.renderer.symbol.applySymbolFromGallery("Hexagon")
-#sym.renderer.symbol.color={'RGB':[255,165,0,0]} #sets color to Orange
-#sym.renderer.symbol.outlinecolor
-#sym.renderer.symbol.size=11
-#lyr.symbology=sym
-#print("~~|   Symbology Changed")
 
 
